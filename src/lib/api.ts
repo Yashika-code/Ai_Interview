@@ -572,6 +572,7 @@ export async function generateQuestions(data: {
   jobRole: string;
   difficulty: string;
   questionCount: number;
+  interviewType?: "text" | "audio";
 }) {
   const response = await apiClient<Record<string, unknown>>(
     "/api/interview/generate-questions",
@@ -581,6 +582,7 @@ export async function generateQuestions(data: {
         ...data,
         jobRole: data.jobRole.trim(),
         role: data.jobRole.trim(),
+        interviewType: data.interviewType || "text",
       }),
     }
   );

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FileText, Upload } from "lucide-react";
 import { generateQuestions, suggestJobRoles, uploadResume } from "@/lib/api";
 import { DIFFICULTIES, QUESTION_COUNTS } from "@/lib/constants";
 
@@ -54,6 +55,7 @@ export function ResumeUpload() {
                 jobRole,
                 difficulty,
                 questionCount: Number(count),
+                interviewType: mode,
             });
             if (!result.interviewId || !result.questions.length)
                 throw new Error("The server did not return interview questions.");
@@ -71,28 +73,21 @@ export function ResumeUpload() {
         <div className="narrow-page">
             <div className="page-heading">
                 <div className="eyebrow">01 / Build your session</div>
-                <h1>Bring your experience.</h1>
+                <h1>Set up your practice.</h1>
                 <p className="muted">
-                    We will turn your resume and target role into a focused practice room.
+                    Add your resume, choose the role you want, and begin a focused practice session.
                 </p>
             </div>
             <form className="panel stack" onSubmit={submit}>
 
                 {/* Resume upload */}
-                <label className="field">
-                    Resume (PDF, DOC, DOCX)
-                    <input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        onChange={handleFileChange}
-                        disabled={busy}
-                    />
-                    {file && (
-                        <small style={{ marginTop: 4, color: "#aaa" }}>
-                            {file.name} · {(file.size / 1024 / 1024).toFixed(2)} MB
-                        </small>
-                    )}
-                </label>
+                <div className="field">
+                    <span>Your resume (PDF, DOC, DOCX)</span>
+                    <label className={`file-picker${file ? " has-file" : ""}`}>
+                        <input type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} disabled={busy} />
+                        {file ? <><FileText size={18} /><span><strong>{file.name}</strong><small>{(file.size / 1024 / 1024).toFixed(2)} MB selected</small></span><b>Change file</b></> : <><Upload size={18} /><span><strong>Choose your resume</strong><small>PDF, DOC or DOCX</small></span><b>Browse</b></>}
+                    </label>
+                </div>
 
                 {/* Job role — select after upload, plain input before */}
                 <label className="field">
@@ -142,10 +137,10 @@ export function ResumeUpload() {
                 </div>
 
                 {/* Interview type toggle */}
-                <fieldset style={{ border: "1px solid #333", borderRadius: 8, padding: "12px 16px" }}>
-                    <legend style={{ fontSize: 13, color: "#aaa", padding: "0 6px" }}>Interview type</legend>
-                    <div style={{ display: "flex", gap: 24 }}>
-                        <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14 }}>
+                <fieldset className="mode-picker">
+                    <legend>Practice format</legend>
+                    <div>
+                        <label>
                             <input
                                 type="radio"
                                 name="mode"
@@ -153,9 +148,9 @@ export function ResumeUpload() {
                                 checked={mode === "text"}
                                 onChange={() => setMode("text")}
                             />
-                            Text
+                            Write your answers
                         </label>
-                        <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 14 }}>
+                        <label>
                             <input
                                 type="radio"
                                 name="mode"
@@ -163,7 +158,7 @@ export function ResumeUpload() {
                                 checked={mode === "audio"}
                                 onChange={() => setMode("audio")}
                             />
-                            Audio (AI speaks; you answer by microphone)
+                            Speak your answers
                         </label>
                     </div>
                 </fieldset>

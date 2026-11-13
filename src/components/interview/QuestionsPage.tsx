@@ -200,6 +200,7 @@ export function QuestionsPage({ interviewId }: { interviewId: string }) {
               busy={busy}
               interviewId={interviewId}
               questionId={question.id}
+              questionText={question.text}
               mode={mode}
             />
           </>

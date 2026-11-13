@@ -5,8 +5,8 @@ import "./ui-enhancements.css";
 import ToastHost from "@/components/ToastHost";
 
 export const metadata: Metadata = {
-  title: "AI Interview Analyzer",
-  description: "Practice interviews shaped around your experience.",
+  title: "Interview Studio",
+  description: "A calmer space to practise for your next interview.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
